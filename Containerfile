@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/bazzite:stable
+FROM ghcr.io/winsdominoes/winnieos:latest
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
@@ -35,6 +35,11 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
     
+RUN dnf5 install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+COPY --from=ghcr.io/ublue-os/akmods:main-43 / /tmp/akmods-common
+RUN find /tmp/akmods-common
+RUN dnf5 install -y /tmp/akmods-common/rpms/kmods/kmod-wl*.rpm broadcom-wl --skip-broken
 ### LINTING
 ## Verify final image and contents are correct.
 RUN bootc container lint
