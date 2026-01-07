@@ -11,7 +11,7 @@ set -ouex pipefail
 
 # this installs a package from fedora repos
 # Use a COPR Example:
-dnf5 remove -y slimbook-meta-gnome slimbook-service
+dnf5 remove -y slimbook-meta-gnome slimbook-service python3-slimbook libslimbook1 --noautoremove
 # dnf5 -y copr enable ublue-os/staging
 # dnf5 -y install package
 # Disable COPRs so they don't end up enabled on the final image:
